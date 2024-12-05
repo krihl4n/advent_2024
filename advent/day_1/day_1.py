@@ -1,4 +1,4 @@
-filepath = "advent/day_1/input.txt"
+filepath = "input.txt"
 
 
 with open(filepath) as input_file:

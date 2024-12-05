@@ -1,5 +1,5 @@
 
-filepath = "advent/day_2/input.txt"
+filepath = "input.txt"
 
 def to_ints(array):
     result = []
@@ -16,7 +16,7 @@ with open(filepath) as file:
         levels = to_ints(line.split(" "))
         print(levels)
 
-        should_increase = levels[0] < levels[1] # todo escape it equal
+        should_increase = levels[0] < levels[1]
         
         for idx, level in enumerate(levels):
             if(idx + 1) == len(levels):

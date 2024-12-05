@@ -1,5 +1,5 @@
 
-filepath = "advent/day_2/input.txt"
+filepath = "input.txt"
 
 def to_ints(array):
     result = []
@@ -17,7 +17,6 @@ with open(filepath) as file:
         report_safe = False
 
         levels = to_ints(line.split(" "))
-       # print(levels)
 
         should_increase = levels[0] < levels[1]
                 
@@ -55,20 +54,15 @@ with open(filepath) as file:
         if report_safe:
             safe_reports += 1
     
-    # corrected
-    print("safe reports:")
+
+    print("safe reports without correction:")
     print(safe_reports)
-   # print("bad reports:")
-    # print(bad_reports)
-  #  print("corrected:")
-   # print(corrected_reports)
+
+    # corrected
     for report_pair in corrected_reports:
-        #print(report_pair)
         report_safe = False
 
         for levels in report_pair:
-            #print("levels:")
-            #print(levels)
             should_increase = levels[0] < levels[1]
 
             for idx, level in enumerate(levels):
@@ -93,9 +87,9 @@ with open(filepath) as file:
             else:
                 bad_reports.append(levels)
 
-    print("safe reports:")
+    print("safe reports with correction:")
     print(safe_reports)
-    print("bad reports:")
-    print(bad_reports)
+    # print("bad reports:")
+    # print(bad_reports)
 
         
