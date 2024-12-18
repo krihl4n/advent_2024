@@ -1,4 +1,4 @@
-file_path = "test_input.txt"
+file_path = "input.txt"
 
 points = [(3, 4), (5, 5)]
 
@@ -27,16 +27,23 @@ def find_antinodes_for(point_1, point_2, size):
 
     antinodes = []
 
-    if res_x1 < size and res_y1 < size:
-        antinodes.append((res_x1, res_y1))
+    if point_1[0] < point_2[0] and point_1[1] > point_2[1]:
+        a1 = (res_x1, res_y2)
+        a2 = (res_x2, res_y1)
+    else:
+        a1 = (res_x1, res_y1)
+        a2 = (res_x2, res_y2)
 
-    if res_x2 < size and res_y2 < size:
-        antinodes.append((res_x2, res_y2))
+    if a1[0] < size and a1[1] < size and a1[0] >= 0 and a1[1] >= 0:
+        antinodes.append(a1)
+
+    if a2[0] < size and a2[1] < size and a2[0] >= 0 and a2[1] >= 0:
+        antinodes.append(a2)
 
     print("antinodes for {}{} are {}".format( point_1, point_2, antinodes))
     return antinodes
 
-print(find_antinodes_for((4, 8),(5, 5), 10)) # expected (1, 3) (7, 6)
+#print(find_antinodes_for((4, 8),(5, 5), 10)) # expected (1, 3) (7, 6)
 
 antenna_map = []
 
@@ -68,6 +75,8 @@ for i, row in enumerate(antenna_map):
 
 print(antennas_locations)
 
+unique_antinodes = []
+
 for antenna in antennas_locations.keys():
     locations = antennas_locations[antenna]
 
@@ -75,4 +84,9 @@ for antenna in antennas_locations.keys():
         for point2 in locations[idx+1:]:
             antinodes = find_antinodes_for(point1, point2, size = len(antenna_map))
             print(antinodes)
+            for a in antinodes:
+                if a not in unique_antinodes:
+                    unique_antinodes.append(a)
 
+print("unique antinodes: ", unique_antinodes)
+print("result", len(unique_antinodes))
