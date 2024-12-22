@@ -1,4 +1,4 @@
-path = 'test_input.txt'
+path = 'input.txt'
 
 print()
 
@@ -40,10 +40,10 @@ print("trailheads:", trailheads)
 print("peaks:", peaks)
 
 
-trailhead = trailheads[0]
-peak = peaks[0]
-
-location = trailhead
+# trailhead = trailheads[0]
+# peak = peaks[0]
+#
+# location = trailhead
 
 def next_location_valid(current_location, next_location):
     if next_location[0] < 0 or next_location[1] < 0 or next_location[0] >= len(input) or next_location[1] >= len(input):
@@ -77,5 +77,26 @@ for x, row in enumerate(input):
 
         possible_locations[(x, y)] = next_possible_locations
 
-for pl in possible_locations:
-    print(pl, possible_locations[pl])
+# for pl in possible_locations:
+#     print(pl, possible_locations[pl])
+
+
+counter = 0
+
+for th in trailheads:
+    start = th
+    print("start:", start)
+    locations_to_try = possible_locations[start]
+    peaks_reached = []
+
+    while len(locations_to_try) > 0:
+        next_loc = locations_to_try.pop()
+        if input[next_loc[0]][next_loc[1]] == 9:
+            peaks_reached.append(next_loc)
+        locations_to_try += possible_locations[next_loc]
+        if next_loc in locations_to_try:
+            locations_to_try.remove(next_loc) #??? keep track of trails?
+    counter += len(peaks_reached)
+
+    print("peaks reached:", peaks_reached)
+print("number:", counter)
