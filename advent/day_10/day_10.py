@@ -46,14 +46,15 @@ print("peaks:", peaks)
 # location = trailhead
 
 def next_location_valid(current_location, next_location):
+
     if next_location[0] < 0 or next_location[1] < 0 or next_location[0] >= len(input) or next_location[1] >= len(input):
         return False
 
     current_height = input[current_location[0]][current_location[1]]
     next_height = input[next_location[0]][next_location[1]]
 
-    diff = next_height - current_height
-    return diff == 0 or diff == 1
+    diff = int(next_height) - int(current_height)
+    return diff == 1
 
 possible_locations = dict()
 
@@ -81,22 +82,33 @@ for x, row in enumerate(input):
 #     print(pl, possible_locations[pl])
 
 
-counter = 0
+result = 0
+peaks_reached = []
 
+def walk(next_location, trail):
+    trail.append(next_location)
+    if input[next_location[0]][next_location[1]] == 9:
+        print("peak at ", next_location)
+        # print("trail:", trail)
+        # for t in trail:
+        #     print(t, input[t[0]][t[1]])
+        if next_location not in peaks_reached:
+            peaks_reached.append(next_location)
+    next_locations = possible_locations[next_location]
+    for previous_location in trail:
+        if previous_location in next_locations:
+            next_locations.remove(previous_location)
+
+    for next in next_locations:
+        walk(next, list(trail))
+
+result = 0
 for th in trailheads:
     start = th
-    print("start:", start)
-    locations_to_try = possible_locations[start]
+    print("\nstart:", start)
+
+    walk(th, [])
+    result += len(peaks_reached)
     peaks_reached = []
 
-    while len(locations_to_try) > 0:
-        next_loc = locations_to_try.pop()
-        if input[next_loc[0]][next_loc[1]] == 9:
-            peaks_reached.append(next_loc)
-        locations_to_try += possible_locations[next_loc]
-        if next_loc in locations_to_try:
-            locations_to_try.remove(next_loc) #??? keep track of trails?
-    counter += len(peaks_reached)
-
-    print("peaks reached:", peaks_reached)
-print("number:", counter)
+print("result:", result)
