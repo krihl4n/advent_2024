@@ -131,7 +131,6 @@ def process_sides(sides):
         if processed_side not in processed_sides:
             processed_sides.append(processed_side)
 
-        print("processed: ", processed_sides)
     print(len(processed_sides))
     return len(processed_sides)
 
