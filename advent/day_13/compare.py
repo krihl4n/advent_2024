@@ -1,4 +1,6 @@
-filepath = "test_input.txt"
+import numpy as np
+
+filepath = "input.txt"
 #
 # A: (11, 60) B: (66, 24) prize: (1452, 4560)
 # A: 0 B: 22
@@ -45,12 +47,8 @@ with open(filepath) as input_file:
     rules.append(Rule(button_a, button_b, prize))
 
 
-total_a = 0
-total_b = 0
-
-for rule in rules:
-    print(rule)
-
+def solve_iterative(rule):
+    print("iterative")
     ax = rule.button_a[0]
     ay = rule.button_a[1]
 
@@ -68,7 +66,7 @@ for rule in rules:
 
     solved = False
     while x > 0:
-        if x % bx == 0 and y % by == 0 and int(x/bx) == int(y/by):
+        if x % bx == 0 and y % by == 0 and int(x / bx) == int(y / by):
             b_count = int(x / bx)
             solved = True
             break
@@ -78,10 +76,60 @@ for rule in rules:
             a_count += 1
 
     if solved:
-        total_a += a_count
-        total_b += b_count
         print("A: {} B: {}".format(a_count, b_count))
+        return True
     else:
         print("unsolvable")
+        return False
 
-print("result:", 3 * total_a + total_b)
+
+def solve_with_algebra(rule):
+    print("algebra")
+    ax = rule.button_a[0]
+    ay = rule.button_a[1]
+
+    bx = rule.button_b[0]
+    by = rule.button_b[1]
+
+    px = rule.prize[0]
+    py = rule.prize[1]
+
+    A = np.array([[ax, bx], [ay, by]])
+    b = np.array([px, py])
+    x = np.linalg.solve(A, b)
+
+    a_count_f = x[0]
+    b_count_f = x[1]
+    print(x)
+
+    x = x.astype(np.int64)
+    a_count_i = x[0]
+    b_count_i = x[1]
+
+    diff_a = abs(a_count_f - a_count_i)
+    diff_b = abs(b_count_f - b_count_i)
+
+    print(diff_a, diff_b)
+    precision = 0.001
+    if (diff_a < precision or 1 - diff_a < precision) and (diff_b < precision or 1 - diff_b < precision):
+        print("solved")
+        if 1 - diff_b < precision:
+            b_count_i += 1
+        if 1 - diff_a < precision:
+            a_count_i += 1
+        print(a_count_i, b_count_i)
+        return True
+    else:
+        print("unsolvable")
+        return False
+
+
+for rule in rules:
+    print()
+    print(rule)
+
+    r1 = solve_iterative(rule)
+    r2 = solve_with_algebra(rule)
+
+    if r1 is not r2:
+        print("difference found!")
