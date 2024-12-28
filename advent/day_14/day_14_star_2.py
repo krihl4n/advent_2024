@@ -1,3 +1,5 @@
+from time import sleep
+
 path = 'input.txt'
 
 
@@ -32,7 +34,7 @@ with open(path) as file:
         robots.append(robot)
         # print(robot)
 
-seconds = 500
+seconds = 10000
 # space_width = 11
 space_width = 101
 # space_height = 7
@@ -44,14 +46,36 @@ def to_string(positions):
     for x in range(0, space_width):
         for y in range(0, space_height):
             if (x, y) in positions:
-                s += "+"
+                s += "O"
             else:
                 s += " "
         s += "\n"
     return s
 
+#
+# def to_string(positions):
+#     s = "\n"
+#     for x in range(0, space_width):
+#         for y in range(0, space_height):
+#             if (y, x) in positions:
+#                 s += "O"
+#             else:
+#                 s += " "
+#         s += "\n"
+#     return s
 
-for s in range(0, seconds):
+
+def append_text_to_file(file_path, text_to_append):
+    try:
+        with open(file_path, 'a') as file:
+            file.write(text_to_append + '\n')
+
+    except Exception as e:
+        print(e)
+
+
+n = 9996
+for s in range(0, 8000):
     positions = []
 
     for robot in robots:
@@ -76,5 +100,28 @@ for s in range(0, seconds):
         positions.append((px, py))
         robot.px = px
         robot.py = py
+
+    img = to_string(positions)
     print(s)
-    print(to_string(positions))
+    if "OOOOOOOOOOOO" in img:
+        to_append = "{}\n{}\n\n".format(s, img)
+        append_text_to_file("result.txt", to_append)
+
+    # # times = [805, 906, 1007, 1108, 1209, 1310, 1411, 1512, 1613, 1714, 1815, 1916]
+    # times = [1916, 2017, 2118, 2219, 2320, 2421, 2522, 2623, 2724, 2825, 2926]
+    #
+    # if s == n:
+    #     n = 101 + n
+    #     print(s)
+    #     image = to_string(positions)
+    #
+    #     to_append = "{}\n{}\n\n".format(s, image)
+    #     append_text_to_file("result.txt", to_append)
+        # print(image[:int(len(image)/2)])
+        # sleep(0.1)
+
+#7370 -- wrong
+#7371 -- wrong
+#17773
+#17774 - tried
+
